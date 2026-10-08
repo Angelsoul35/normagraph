@@ -35,11 +35,10 @@ class NormaGraphService:
         )
 
     def search(self, query: str) -> list[dict]:
-        hits = self.retriever.retrieve(
-            query, k=self.settings.top_k, hops=self.settings.expand_hops
-        )
-        return [{"norm_id": h.norm_id, "title": h.title, "score": h.score, "via": h.via}
-                for h in hits]
+        hits = self.retriever.retrieve(query, k=self.settings.top_k, hops=self.settings.expand_hops)
+        return [
+            {"norm_id": h.norm_id, "title": h.title, "score": h.score, "via": h.via} for h in hits
+        ]
 
     def norm_detail(self, norm_id: str) -> dict | None:
         norm = self.graph.norm(norm_id)
@@ -67,7 +66,5 @@ class NormaGraphService:
         }
 
     def ask(self, question: str) -> dict:
-        result = self.qa.answer(
-            question, k=self.settings.top_k, hops=self.settings.expand_hops
-        )
+        result = self.qa.answer(question, k=self.settings.top_k, hops=self.settings.expand_hops)
         return asdict(result)

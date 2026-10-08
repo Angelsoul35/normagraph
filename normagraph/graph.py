@@ -44,16 +44,12 @@ class NormGraph:
     def _out(self, norm_id: str, rtype: RelationType) -> list[str]:
         if norm_id not in self.g:
             return []
-        return sorted(
-            {t for _, t, d in self.g.out_edges(norm_id, data=True) if d["type"] == rtype}
-        )
+        return sorted({t for _, t, d in self.g.out_edges(norm_id, data=True) if d["type"] == rtype})
 
     def _in(self, norm_id: str, rtype: RelationType) -> list[str]:
         if norm_id not in self.g:
             return []
-        return sorted(
-            {s for s, _, d in self.g.in_edges(norm_id, data=True) if d["type"] == rtype}
-        )
+        return sorted({s for s, _, d in self.g.in_edges(norm_id, data=True) if d["type"] == rtype})
 
     # --- queries ------------------------------------------------------------
     def references_of(self, norm_id: str) -> list[str]:

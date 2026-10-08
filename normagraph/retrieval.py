@@ -42,8 +42,12 @@ class NormRetriever:
                 continue
             norm = self.graph.norms[int(i)]
             hits.append(
-                Hit(norm_id=norm.id, title=norm.title, score=round(float(sims[int(i)]), 4),
-                    via="match")
+                Hit(
+                    norm_id=norm.id,
+                    title=norm.title,
+                    score=round(float(sims[int(i)]), 4),
+                    via="match",
+                )
             )
         return hits
 

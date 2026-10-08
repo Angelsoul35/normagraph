@@ -71,7 +71,9 @@ class RegulationQA:
             top = self.graph.norm(hits[0].norm_id)
             answer = f"{top.title}: {top.text}" if top else "No relevant norm found."
             return QAResult(
-                question=question, answer=answer, cited_norms=[hits[0].norm_id],
+                question=question,
+                answer=answer,
+                cited_norms=[hits[0].norm_id],
                 source="retrieval",
             )
         return QAResult(question=question, answer="No relevant norm found.", source="retrieval")
