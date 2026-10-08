@@ -137,4 +137,4 @@ fallback), the HTTP API, and the CLI. Nothing in the tests touches a real networ
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+[MIT](LICENSE) © Angelo David Padilla Romero
