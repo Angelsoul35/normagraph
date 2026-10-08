@@ -7,6 +7,12 @@ what depends on it, what would break if it changed, and where the corpus is
 inconsistent. On top sits a retrieval layer that uses the graph, and an LLM
 question-answering layer grounded in the retrieved norms.
 
+[![CI](https://img.shields.io/badge/CI-GitHub%20Actions-blue)](.github/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/python-3.11%2B-blue)](pyproject.toml)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
+---
+
 ## Why it matters
 
 Regulation is a web, not a list. An article means nothing without the definitions
