@@ -48,6 +48,33 @@ NormaGraph answers these because it treats the corpus as a graph:
 4. **QA (`qa.py`).** The LLM answers using only the retrieved norms and cites
    them; if it is unreachable, the top matching norm's text is returned.
 
+## Impact analysis and integrity, precisely
+
+**Impact = reverse reachability over dependency edges.** "What breaks if this norm
+changes?" is answered by a breadth-first walk that follows `references` and
+`implements` edges **backwards** from the target: start at the norm, step to the
+norms that reference or implement it, then repeat, transitively, with an optional
+hop limit. `amends` and `repeals` are deliberately excluded — they describe what a
+norm *does to* another, not a standing dependency *on* it. The walk is `O(V + E)`
+over the reached sub-graph. In the bundled corpus, changing `ART-2` (Definitions)
+reaches seven downstream norms, directly and transitively.
+
+**Integrity checks are graph queries.** Each consistency rule is a single pass
+that emits typed findings:
+
+| Finding                    | Rule                                                        |
+| -------------------------- | ----------------------------------------------------------- |
+| `dangling_reference`       | an edge whose target norm does not exist                    |
+| `depends_on_repealed`      | an in-force norm referencing/implementing a repealed norm   |
+| `repealed_still_in_force`  | a norm a `repeals` edge points at, still marked in force    |
+| `amendment_cycle`          | a cycle in the `amends` sub-graph (NetworkX `simple_cycles`)|
+| `orphan`                   | a norm with degree zero                                     |
+
+These are structural truths found by traversal, not by reading prose; the bundled
+corpus embeds three of them on purpose so the check has something to find. They
+catch inconsistencies in the recorded graph, not errors of legal substance — a
+necessary foundation kept deliberately objective and false-positive-free.
+
 ## Quick start
 
 ```bash
