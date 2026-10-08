@@ -2,10 +2,11 @@
 
 ## Las piezas, de principio a fin
 
-```
- normas + relaciones → grafo → consultas / integridad → recuperación + QA
- norms.py, data.py     graph.py  analysis.py              retrieval.py, qa.py
-                                                          llm/ (cascada)
+```mermaid
+flowchart LR
+    A[Normas + relaciones<br/>norms.py, data.py] --> B[Grafo<br/>graph.py]
+    B --> C[Consultas / integridad<br/>analysis.py]
+    C --> D[Recuperación + QA<br/>retrieval.py, qa.py<br/>llm/ cascada]
 ```
 
 Por encima: la **API HTTP** (`main.py`, FastAPI) y la **CLI** (`cli.py`, demo).

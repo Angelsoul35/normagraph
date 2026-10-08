@@ -29,12 +29,13 @@ the interesting questions are about the edges, not the text.
 
 ## Why a graph, and which queries
 
-```
-        references          references
- ART-4 ───────────▶ ART-2 ◀───────────── ART-7
-   ▲                                        ▲
-   │ references                             │ references
- ART-5                                    REG-2019 (implements LAW-2018)
+```mermaid
+flowchart BT
+    ART5[ART-5] -->|references| ART4[ART-4]
+    ART4 -->|references| ART2[ART-2]
+    ART7[ART-7] -->|references| ART2
+    REG2019[REG-2019] -->|references| ART7
+    REG2019 -->|implements| LAW2018[LAW-2018]
 ```
 
 - **`references_of` / `referenced_by`** are the out- and in-edges of type

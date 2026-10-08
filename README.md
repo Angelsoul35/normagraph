@@ -29,13 +29,11 @@ NormaGraph answers these because it treats the corpus as a graph:
 
 ## How it works
 
-```
- norms + relations      graph            queries                 retrieval + QA
- ─────────────────  ───────────────  ──────────────────────  ──────────────────────
- typed edges     ─▶ NetworkX      ─▶ references / impact /  ─▶ TF-IDF match + graph
- (references,       MultiDiGraph     amendment chain /          expansion, then an
-  amends, repeals,                   integrity findings         LLM grounded answer
-  implements)
+```mermaid
+flowchart LR
+    A[Norms + relations<br/>typed edges: references,<br/>amends, repeals, implements] --> B[Graph<br/>NetworkX MultiDiGraph]
+    B --> C[Queries<br/>references / impact /<br/>amendment chain / integrity findings]
+    C --> D[Retrieval + QA<br/>TF-IDF match + graph expansion,<br/>then LLM grounded answer]
 ```
 
 1. **Graph (`graph.py`).** Norms are nodes; typed relationships are directed
