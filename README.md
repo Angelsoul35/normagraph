@@ -117,6 +117,40 @@ Settings load from environment variables with the `NG_` prefix (see
 With no API keys, retrieval and the graph work fully; the QA layer returns the
 top matching norm instead of an LLM-written answer.
 
+## Validated on the real GDPR
+
+The bundled example corpus is small and hand-made, which keeps the tests deterministic.
+To show the graph holds up on a real, genuinely cross-referential regulation, NormaGraph
+is also built from the **real EU GDPR** — all 99 articles of Regulation (EU) 2016/679
+(vendored under `datasets/gdpr.jsonl`; see `datasets/README.md`). Each article becomes a
+norm and every "Article N" citation in its text becomes a `REFERENCES` edge. Run
+`python -m normagraph.real_benchmark`:
+
+```
+articles (norms)   : 99
+cross-references    : 311  (resolution 100% — every citation hits a real article)
+connected / orphan  : 83 / 16
+
+most-cited articles (times another article points at them):
+  Article 63   <- 12      # the consistency mechanism
+  Article 9    <- 11      # special categories of data
+  Article 46   <- 11      # transfers subject to safeguards
+  Article 6    <- 10      # lawfulness of processing
+
+impact of Article 5 (articles that transitively depend on it): 70 of 99
+
+control — scramble each article's words and re-extract citations:
+  references found : 6  (vs 311 real)
+```
+
+NormaGraph recovers the regulation's **actual** dependency web straight from the text:
+311 article-to-article citations (every one resolving to a real article), the
+foundational articles the rest leans on (Article 5's principles reach 70 of the 99
+articles transitively — the blast radius of changing them), and the 16 orphans with no
+explicit cross-reference. The graph is deterministic, so there is nothing to over/underfit;
+the control confirms the edges are the regulation's real citations — scrambling each
+article's words collapses the graph from 311 edges to 6.
+
 ## Testing
 
 ```bash
@@ -127,7 +161,9 @@ pytest --cov=normagraph --cov-report=term-missing --cov-fail-under=80
 The suite covers the graph queries (references, impact, amendment chain,
 neighbours), the integrity checks (including crafted cases for cycles and
 repealed-still-in-force), graph-expanded retrieval, the QA layer (LLM and
-fallback), the HTTP API, and the CLI. Nothing in the tests touches a real network.
+fallback), the HTTP API, the CLI, and the **real-GDPR benchmark** (the loader, the
+pinned Article 6 → {9,10,23} citation, the 100% resolution, the impact blast radius, the
+real orphans, and the scramble control). Nothing in the tests touches a real network.
 
 ## Documentation
 
